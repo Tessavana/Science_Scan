@@ -1,0 +1,48 @@
+.main{
+    /*padding: 50px 0;*/
+    text-align: center;
+}
+
+.desc{
+    font-family: Arial;
+    font-size: 18px;
+    color: rgb(111, 111, 111);
+}
+
+.showPDF {
+    margin-bottom: 2%;
+}
+.back {
+    position: absolute;
+    left: 45px;
+    top: 60px;
+    padding-right: 10px;
+    padding-left: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+}
+.backPNG {
+    height: 10px;
+}
+
+h1 {
+    font-family: Arial;
+    font-size: 60px;
+    /*color: #c72125;*/
+    color: #4b616b;
+    margin-left: 40px;
+    text-align: center;
+}
+
+h2 {
+    font-family: Arial;
+    /*margin-left: 40px;*/
+    text-align: left;
+}
+
+/*
+color-primary-darker: #570301;
+--color-secondary: #c72125;
+--color-secondary-darker: #b31e21;
+rgb(111, 111, 111)
+*/

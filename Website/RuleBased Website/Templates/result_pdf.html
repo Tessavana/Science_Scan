@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" type="text/css" href="static/style.css"/>
+    <title>Result PDF</title>
+</head>
+<body>
+    <div class="main">
+        <form action="{{ url_for('index') }}" method="get">
+            <button class="back" type="submit"><img class="backPNG" src="/static/back.png" alt="Back"/>
+            </button>
+        </form>
+        <div>
+            <h1>SmartStats</h1>
+        </div>
+        {% if found %}
+            <div id="warn" class="warn" style="display: block;">
+                <button id="close" class="close" onclick="this.parentNode.style.display = 'none'">X</button>
+                <p class="desc warntext"> 
+                Consider checking the output. It might be wrong.
+                </p>
+            </div>
+        {% endif %}
+        {% if found %}
+        <!-- Display this content if 'found' is not empty -->
+        <h2>Analysis Output</h2>
+        {% if found_m %}
+        <p class="desc"> We checked your file and uploaded it here with critical sentences underlined.
+            The following table contains all errors found.</p>
+        {% endif %}         
+            <table>
+                <thead>
+                    <tr>
+                        <th>Error Type</th>
+                        <th>Trigger</th>
+                        <th>Citation</th>
+                        <th>Further Information</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for word in found_m %}
+                        <tr>
+                            <td style="color:#FF8C00;">Non-significant p-value</td>
+                            <td>{{ word }}</td>
+                            <td>{{ phrase_m[loop.index0] }}</td>
+                            <td>“Absence of Evidence is not Evidence of Absence” <br>
+                                <a href="https://www.researchgate.net/publication/">Common Misconceptions and Misunderstandings</a> (Eden & Inan, 2022) <br>
+                                <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4877414/">A guide to misinterpretations</a> (Greenland et al., 2016)<br>
+                                <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6412612/">Making 'null effects' informative</a> (Harms & Lakens, 2018)</td>
+                        </tr>
+                    {% endfor %}
+                    {% for word in found_a %}
+                        <tr>
+                            <td style="color:#002D62">Unprecise p-Value</td>
+                            <td>{{ word|safe }}</td>
+                            <td>
+                                {{ phrase_a[loop.index0] }}
+                            </td>
+                            <td>
+                                <a href="https://www.researchgate.net/publication/">Common Misconceptions and Misunderstandings</a> (Eden & Inan, 2022) <br>
+                                <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4877414/">A guide to misinterpretations</a> (Greenland et al., 2016)<br>
+                                <a href="https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6412612/">Making 'null effects' informative</a> (Harms & Lakens, 2018)</td>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {% for miss in missing %}
+                        <tr>
+                            <td>Missing statistical information</td>
+                            <td>{{ miss }}</td>
+                            <td></td>
+                            <td>
+                                <a href="https://doi.org/10.1198/000313006X152649">Difference Between “Significant” and “Not Significant” is not Itself Statistically Significant</a> <br> (Gelman & Stern, 2012) <br>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {% if open %}
+                        <tr>
+                            <td>No accessible data</td>
+                            <td>{{ open }}</td>
+                            <td></td>
+                            <td>{{ recom }}</td>
+                        </tr>
+                        {% endif %}
+                </tbody>
+            </table>
+            <div style="padding: 2%;"> </div>
+            <!--{% if open %}
+            <div class="warn">
+            <p class="desc warntext">Warning: <br>
+                {{ open }}</p>
+            </div>
+            {% endif %} -->
+           <!-- <div class="showPDF">
+                 {% if base64_pdf %}
+                    <iframe src="data:application/pdf;base64,{{ base64_pdf }}" width="100%" height="600px"></iframe>-->
+   
+                    <!-- <embed src="data:application/pdf;base64,{{ base64_pdf }}#page={{ first_match }}" type="application/pdf">-->
+                <!--{% else %}
+                    <p>No PDF available</p>
+                {% endif %}-->
+                <div class="showPDF">
+                    {% if base64_pdf %}
+                        <object data="data:application/pdf;base64,{{ base64_pdf }}#page={{ first_match }}" type="application/pdf" width="100%" height="800px">
+                            <p>Your browser does not support PDF embedding. You can <a href="data:application/pdf;base64,{{ base64_pdf }}" target="_blank">download the PDF</a> instead.</p>
+                        </object>
+                    {% else %}
+                        <p>No PDF available</p>
+                    {% endif %}
+                </div>
+                
+                <!--</div>-->
+        {% else %}
+        <!-- Display this content if 'found' is empty -->
+        <p class="desc" style="text-align: center;">We checked your file, but our algortihm could not find any error. Keep up the good work!</p>
+        <img id="dog"src="/static/good.jpg" alt="Happy Doggo">
+        {% endif %}
+    </div>
+</body>
+<style>
+    .main{
+        margin: 2%;
+        margin-right: 10%;
+    }
+    .desc {
+        text-align: left;
+        margin-left: 1%;
+    }
+    embed, iframe {
+            width: 80%;
+            height: 600px;
+            zoom: 100%;
+        }
+    #dog {
+        object-fit: scale-down;
+        height: 300px;
+        margin: 1%;
+        border-radius: 50px;
+        box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+    }
+    .warn {
+            border: 2px solid #ffc107;
+            background-color: #ffffcc;
+            max-width: 100%;
+            margin-top: 2%;
+            margin-bottom: 2%;
+            /*margin-left: 5vw;*/
+        }
+    .warntext {
+        padding: 1%;
+        color: #505050;
+        font-size: 14px;
+        padding-left: 5%;
+    }
+    .close{
+        position: absolute;
+        right: 11vw;
+        padding: 0.5%;
+        margin: 1%;
+    }
+
+/*table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+thead {
+    background-color:#666b75;
+    color: white;
+}
+
+th, td {
+    border: 0.5px solid #dddddd;
+    text-align: left;
+    padding: 2px;
+    font-family: Arial;
+}*/
+table {
+            border-collapse: collapse;
+            width: 90vw;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        th, td {
+            padding: 5px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+            font-family: Arial;
+        }
+
+        th {
+            background-color: #333;
+            color: #fff;
+            border: none;
+        }
+        th:nth-child(3), td:nth-child(3) {
+            width: 50%;
+        }
+tbody{
+    font-size: 12px;
+}
+thead{
+    font-size: 15px;
+}
+/*tr:nth-child(even) {
+    background-color: #f2f2f2;
+}*/
+
+tr:hover {
+    background-color: #fefff2;
+}
+
+h2{
+    font-family: Arial;
+    text-align: left;
+    padding-left: 1%;
+    color: #4b616b;
+}
+</style>
+</html>
+

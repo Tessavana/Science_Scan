@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scientific Article Highlighter</title>
+    <link rel="stylesheet" type="text/css" href="static/style.css"/>
+</head>
+<body>
+    <div class="main">
+        <div>
+            <h1>SmartStats</h1>
+            <h3 class="desc" style="position: absolute; top: 15%; left:30%">Improves the quality of your statistical analysis using smart tools.</h3>
+        </div>
+        <p class="desc" style="text-align: left; padding-left:17%; padding-top: 5%;"> Upload your PDF to check it for common statistical errors.</p>
+    <form action="/upload" method="post" enctype="multipart/form-data">
+        <input id="pdfFile" type="file" name="file" accept=".pdf" onchange="checkFile()">
+        <br>
+        <div id="check">
+            <label for="select_marginally">Check for statistical misinterpretations:
+                <input class="check" type="checkbox" name="select_marginally" id="select_marginally" onchange="checkFile()">
+            </label>
+            <label for="select_alpha">Check for violation against open science practices and reporting guidelines:
+            <input class="check" type="checkbox" name="select_alpha" id="select_alpha" onchange="checkFile()">
+            </label>
+        </div>
+        <br>
+        <input id="submitButton" type="submit" value="Check file" disabled>
+    </form>
+    </div>
+    
+    
+</body>
+<script>
+    function checkFile() {
+        var fileInput = document.getElementById('pdfFile');
+        var submitButton = document.getElementById('submitButton');
+        var marginallyCheckbox = document.getElementById('select_marginally');
+        var alphaCheckbox = document.getElementById('select_alpha');
+        submitButton.disabled = !(fileInput.files.length > 0 && (marginallyCheckbox.checked || alphaCheckbox.checked));
+        }
+</script>
+<style>
+form {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+input[type="file"] {
+    margin-bottom: 15px;
+    color: #333;
+    padding: 10px;
+    margin-right: 10px;
+}
+
+#check {
+    text-align: left;
+    margin-left: 1%;
+    padding: 16px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #F8F8F8;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    margin-right: 10px;
+    color: #333;
+}
+
+input[type="checkbox"] {
+    margin-bottom: 15px;
+    display: inline-block;
+}
+
+input[type="submit"] {
+    /*background-color: #4caf50;*/
+    background-color: #497c91;
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    align-self: flex-end;
+}
+
+input[type="submit"]:hover {
+    /*background-color: #45a049;*/
+    background-color: #3b6475;
+}
+
+input[type="submit"]:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+label {
+    font-family: Arial;
+}
+</style>
+</html>
