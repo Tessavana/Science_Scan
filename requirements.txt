@@ -1,0 +1,15 @@
+pip~=22.3.1
+wheel~=0.38.4
+setuptools~=65.5.1
+pandas
+PyPDF2
+spacy
+xlsxwriter
+openpyxl
+torch
+numpy
+scikit-learn
+transformers
+keras
+matplotlib
+seaborn
