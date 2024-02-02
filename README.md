@@ -2,7 +2,7 @@
 A research project on detecting statistical misinterpretation of non-significant p-values using NLP, adherence to reporting guidelines and open science principles.
 
 1. Dataset creation
-   * `NLP Dataset creation Engine` is the code responsible for creating the training dataset. This will need PDFs as input from the folder `pdfs`. The code needs `nonsignificant correct` and `nonsignificant incorect` as input for phrases to detect.
+   * `NLP Dataset creation Engine` is the code responsible for creating the training dataset. This will need PDFs as input from the folder `pdfs`. The code needs `nonsignificant correct.xlsx` and `nonsignificant incorect.xlsx` as input for phrases to detect.
 2. Mock-up website
    * This links to a Figma mock-up of how we would envision functionalities and the appearance of Science Scan
 3. NLP
